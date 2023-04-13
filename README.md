@@ -1,6 +1,6 @@
 # alterPDBbfactor
 
-This R package attempts to obtaining all or a specific PDB structure associated to a UniProt AC of your interest and replaces their B-factor column with scores of your preference in the corresponding PDB chain
+This R package attempts to obtain all or a specific PDB structure associated to a UniProt AC of your interest and replaces their B-factor column with scores of your preference in the corresponding PDB chain
 
 ## Installation
 
@@ -12,12 +12,14 @@ Before installing this package, ensure you have the following:
 
 ### How to install
 
-From R, run any of following sets of commands:
+From R, run any of the following sets of commands:
 	
 a) If installing from GitHub:
 
-``install.packages("devtools")``
-``devtools::install_github("marciaah/alterPDBbfactor")``
+ ``install.packages("devtools")``
+
+
+ ``devtools::install_github("marciaah/alterPDBbfactor")``
 
 
 b) If installing from a gzipped copy of the package:
@@ -36,7 +38,7 @@ To run an example, use this command:
 
 Where:
 
-``pdbid`` = a PDB identifier for only one PDB or the word "all" for all the available PDBs that correspond to the UniProtAC
+``pdbid`` = a PDB identifier for only one PDB or the word ``"all"`` for all the available PDBs that correspond to the UniProtAC
 
 ``uniprotAcc`` = the uniProtKB accession code of your protein 
 
@@ -51,6 +53,8 @@ Where:
 
 
 ``outfolder`` = Path to a folder where the altered PDB structures will be saved. 
+
+
 
 All parameters are mandatory!
 
