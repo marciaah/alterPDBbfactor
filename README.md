@@ -1,4 +1,4 @@
-# CCRStoAAC
+# alterPDBbfactor
 
 This R package attempts to obtaining all or a specific PDB structure associated to a UniProt AC of your interest and replaces their B-factor column with scores of your preference in the corresponding PDB chain
 
