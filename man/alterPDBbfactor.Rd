@@ -11,18 +11,14 @@ alterPDBbfactor(pdbid, uniprotAcc, seq_scores, outfolder)
 
 \item{uniprotAcc}{the uniProtKB accession code of your protein (e.g. P00533)}
 
-\item{seq_scores}{A dataframe with two columns: residue position (aacPos) number and the by-residue scores (score) you want to add in the B-factor field of the PDB (e.g. conservation)
-aacPos | score
-1      |  0.1
-2      |  1
-3      |  0.5}
+\item{seq_scores}{Path to a file where you have a table with two columns: residue position (aacPos) number and the by-residue scores (score) that you want to add in the B-factor field of the PDB (e.g. conservation)}
 
 \item{outfolder}{The output folder}
 
 \item{chain_id}{a chain of yoyr PDB of interest (e.g. A)}
 }
 \value{
-The PyMol script
+Nothing, jus prints out the altered PDBs
 }
 \description{
 Download and renumber a PDB structure, then alters the B-factor column replacing by scores/numbers of your interest

@@ -2,6 +2,3 @@
 
 export(alterPDBbfactor)
 export(getPDBinfo)
-importFrom(foreach,"%do%")
-importFrom(foreach,foreach)
-importFrom(itertools,isplitRows)

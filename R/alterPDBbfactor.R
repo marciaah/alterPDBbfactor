@@ -2,9 +2,6 @@
 #' @description gets the information of the PDB of interest, and identifies those regions that have missing coordinates
 #' @param pdbid a PDB identifier (e.g. 2GS6) for only one PDB or the word "all" for all the available PDBs that correspond to the UniProtAC
 #' @param uniprotAcc the uniProtKB accession code of your protein (e.g. P00533)
-#' @importFrom foreach %do%
-#' @importFrom foreach foreach
-#' @importFrom itertools isplitRows
 #' @return  A dataframe with PDB information
 #' @export
 getPDBinfo<-function(pdbid,uniprotAcc){
@@ -138,17 +135,9 @@ getPDBinfo<-function(pdbid,uniprotAcc){
 #' @param pdbid a PDB identifier (e.g. 2GS6)
 #' @param chain_id a chain of yoyr PDB of interest (e.g. A)
 #' @param uniprotAcc the uniProtKB accession code of your protein (e.g. P00533)
-#' @param seq_scores Path to a file where you have two columnsA dataframe with two columns: residue position (aacPos) number and the by-residue scores (score) you want to add in the B-factor field of the PDB (e.g. conservation)
-#' aacPos | score
-#' 1      |  0.1
-#' 2      |  1
-#' 3      |  0.5
-#'
+#' @param seq_scores Path to a file where you have a table with two columns: residue position (aacPos) number and the by-residue scores (score) that you want to add in the B-factor field of the PDB (e.g. conservation)
 #' @param outfolder The output folder
-#' @importFrom foreach %do%
-#' @importFrom foreach foreach
-#' @importFrom itertools isplitRows
-#' @return  The PyMol script
+#' @return  Nothing, jus prints out the altered PDBs
 #' @export
 alterPDBbfactor<-function(pdbid,uniprotAcc,seq_scores,outfolder){
 
@@ -183,7 +172,6 @@ alterPDBbfactor<-function(pdbid,uniprotAcc,seq_scores,outfolder){
 
   #THis is to check if the PDB chain has insertion or deletions.
   #If so, the check column will have 1, and this structure will not be straightforward to alter
-  #TODO: include this structures, but put different color for this regions
   aux$shift_start<-aux$unp_start-aux$start
   aux$shift_end<-aux$unp_end-aux$end
   aux$check<-ifelse(aux$shift_start==aux$shift_end,0,1)
@@ -243,8 +231,9 @@ alterPDBbfactor<-function(pdbid,uniprotAcc,seq_scores,outfolder){
           {
             #DEBUG:
             #message(paste(pdb_id,chain_id,pdb_pos,unip_pos,pdb_shift_pos,author_pos,colour,group,conservation),sep=",")
+
             pdbinfo<-rbind(pdbinfo,cbind(pdb_id,chain_id,pdb_pos,unip_pos,pdb_shift_pos,author_pos,score))
-            #pdbinfo<-rbind(pdbinfo,cbind(pdb_id,ch,pdb_pos,unip_pos,pdb_shift_pos,author_pos,score))
+
           }
         }
       }
@@ -253,9 +242,8 @@ alterPDBbfactor<-function(pdbid,uniprotAcc,seq_scores,outfolder){
       pdbinfo<-unique(pdbinfo[!is.na(pdbinfo$pdb_id),])
 
 
-      ## Generating a PDB file with conservation score in B-factors column
+      ## Generating a PDB file with your scores in B-factors column
       # Also the amino acids are renumbered to match the UniProt sequence numbering
-      # This PDB structure will be used for coloring by conservation and by CCRs
       skip_to_next <- FALSE
       #attempt to obtain the PDB structure
       tryCatch(pdbstructure <- bio3d::read.pdb(pdb_id,rm.alt=FALSE,verbose = F),
@@ -270,7 +258,7 @@ alterPDBbfactor<-function(pdbid,uniprotAcc,seq_scores,outfolder){
       #Save the original PDB structure in PDB format. ONLY SAVES ATOM and HETATM records
       bio3d::write.pdb(pdbstructure, file=paste(outfolder,"/",pdb_id,"_original.pdb",sep=""))
 
-      # extract the atom records. Among the columns, "b" has the b-factors
+      # extract the atom records.
       atom<-pdbstructure$atom
 
       #adding the score to the atom in structure
@@ -283,6 +271,7 @@ alterPDBbfactor<-function(pdbid,uniprotAcc,seq_scores,outfolder){
       # Skipping to next pdb in loop if an error occurred
       if(skip_to_next) { next }
 
+      #Among the columns, "b" has the b-factors
       mergeblock$b<-ifelse(is.na(mergeblock$score),-1,mergeblock$score)
 
 
