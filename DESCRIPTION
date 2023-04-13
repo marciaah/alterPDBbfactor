@@ -1,12 +1,31 @@
 Package: alterPDBbfactor
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Type: Package
+Title: Alter B-factor column in PDB structures
+Version: 1.0.0
+Date: 2023-04-12
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Marcia", "Hasenahuer", , "marcia.hasenahuer@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-0524-1116"))
+Description: Provided a protein UniProt AC code and an input file with scores for 
+    each position of the protein sequence, this package will atempt to obtain all
+    the PDB structures associated with the UniProt AC and replace the B-factor column
+    with the scores from the input file. This will be done only for the PDB 
+    chains that correspond to the UniProt AC.
+    The folder ./out will have the ATOM and HETATM records for the modified PDB files
+    (*_Bfact-score.pdb) and also from the original PDB files (*_original.pdb).
+License: `use_mit_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+LazyData: true
 RoxygenNote: 7.2.3
+Imports: 
+      plyr,
+      data.table,
+      magrittr,
+      usethis,
+      jsonlite,
+      tidyr,
+      dplyr,
+      httr,
+      bio3d,
+      RCurl
